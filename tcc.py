@@ -9,7 +9,7 @@ with open("coco.names","r") as f:
     class_names  = [cname.strip() for cname  in f.readlines()]
 
 #Carregar Video
-cap = cv2.VideoCapture("estudantes.mp4")
+cap = cv2.VideoCapture("Pessoa caminhando.mp4")
 
 # Define o tamanho desejado para a janela
 w = 1024
@@ -43,15 +43,17 @@ while True:
 
         #Criar uma cor para cada classe
         color = COLORS[int(classid) % len(COLORS)]
+		
+        if int(classid) == 0:
+		
+			#Texto em cima do quadrado e confiança
+            label = f"{class_names[classid]} : {round(score*100)}%"
 
-        #Texto em cima do quadrado e confiança
-        label = f"{class_names[classid]} : {score}"
+			#Desenho do retangulo
+            cv2.rectangle(frame, box, color, 10)
 
-        #Desenho do retangulo
-        cv2.rectangle(frame, box, color, 10)
-
-        #Informações do retangulo: Na imagem = frame, Qual txt = label, Onde vai ficar = box.
-        cv2.putText(frame, label, (box[0],box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, color, 2)
+			#Informações do retangulo: Na imagem = frame, Qual txt = label, Onde vai ficar = box.
+            cv2.putText(frame, label, (box[0],box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, color, 2)
 
     frame = cv2.resize(frame, (w, h))
 
